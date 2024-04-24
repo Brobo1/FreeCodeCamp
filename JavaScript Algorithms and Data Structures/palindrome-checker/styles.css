@@ -1,5 +1,6 @@
 html {
-  background-color: #4b4b4b;
+  background-color: #252525;
+  font-family: Roboto, sans-serif;
 }
 
 body {
@@ -7,11 +8,33 @@ body {
   padding: 0;
 }
 
+.heading {
+  font-weight: lighter;
+  font-size: 2em;
+  color: #e1e1e1;
+}
+
+.what-is {
+  max-width: 350px;
+  color: #b6b6b6;
+}
+
 main {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .container {
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+#result {
+  min-height: 200px;
+  max-height: 200px;
+  width: 300px;
 }
