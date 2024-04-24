@@ -1,7 +1,9 @@
 const textField = document.getElementById("text-input");
 const button = document.getElementById("check-btn");
+const result = document.getElementById("result");
 
 button.addEventListener("click", () => {
+  result.textContent = checker(textField.value);
   console.log(checker(textField.value));
 });
 
@@ -13,7 +15,7 @@ function validator(str) {
 }
 
 function symbolRemove(str) {
-  return str.replace(/[\W_]/g, "");
+  return str.replace(/[\W_]/g, "").toLowerCase();
 }
 
 function checker(str) {
@@ -21,7 +23,8 @@ function checker(str) {
   const flipped = normal.split("").reverse().join("");
 
   if (!str) {
-    return "Please input a value";
+    alert("Please input a value");
+    return null;
   }
   return `${str} is${normal === flipped ? "" : " not"} a palindrome`;
 }
