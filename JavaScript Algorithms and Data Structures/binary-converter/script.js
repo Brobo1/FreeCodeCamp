@@ -1,21 +1,36 @@
+const callStack = [
+  'a(): returns "freeCodeCamp" + b()',
+  'b(): returns "is " + c()',
+  'c(): returns "awesome!"',
+];
+
+function a() {
+  return "freeCodeCamp " + b();
+}
+function b() {
+  return "is " + c();
+}
+function c() {
+  return "awesome!";
+}
+
+console.log(a());
+
 const numberInput = document.getElementById("number-input");
 const convertBtn = document.getElementById("convert-btn");
 const result = document.getElementById("result");
 
 const decimalToBinary = (input) => {
-  const inputs = [];
-  const quotients = [];
-  const remainders = [];
+  let binary = "";
 
-  while (input > 0) {
-    const quotient = Math.floor(input / 2);
-    const remainder = input % 2;
-    inputs.push(input);
-    quotients.push(quotient);
-    remainders.push(remainder);
-    input = quotient;
+  if (input === 0) {
+    binary = "0";
   }
-  console.log("Inputs: ", inputs);
+  while (input > 0) {
+    input = Math.floor(input / 2);
+    binary = (input % 2) + binary;
+  }
+  result.innerText = binary;
 };
 
 const checkUserInput = () => {
