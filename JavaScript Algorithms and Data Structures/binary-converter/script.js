@@ -48,8 +48,14 @@ const showAnimation = () => {
         </p>
       `;
     }, obj.addElDelay);
-    setTimeout(() => {}, obj.showMsgDelay);
+    setTimeout(() => {
+      document.getElementById(obj.inputVal).textContent = obj.msg;
+    }, obj.showMsgDelay);
+    setTimeout(() => {
+      document.getElementById(obj.inputVal).remove();
+    }, obj.removeElDelay);
   });
+  setTimeout(() => {}, 20000);
 };
 
 const checkUserInput = () => {
