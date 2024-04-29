@@ -1,45 +1,43 @@
-const callStack = [
-  'a(): returns "freeCodeCamp" + b()',
-  'b(): returns "is " + c()',
-  'c(): returns "awesome!"',
-];
-
-function a() {
-  return "freeCodeCamp " + b();
-}
-function b() {
-  return "is " + c();
-}
-function c() {
-  return "awesome!";
-}
-
-console.log(a());
-
 const numberInput = document.getElementById("number-input");
 const convertBtn = document.getElementById("convert-btn");
 const result = document.getElementById("result");
 
-const decimalToBinary = (input) => {
-  let binary = "";
+const animationData = [];
 
-  if (input === 0) {
-    binary = "0";
+const decimalToBinary = (input) => {
+  if (input === 0 || input === 1) {
+    return String(input);
+  } else {
+    return decimalToBinary(Math.floor(input / 2)) + (input % 2);
   }
-  while (input > 0) {
-    input = Math.floor(input / 2);
-    binary = (input % 2) + binary;
-  }
-  result.innerText = binary;
+};
+
+const showAnimation = () => {
+  setTimeout(() => {
+    console.log("free");
+  }, 500);
+  setTimeout(() => {
+    console.log("Code");
+  }, 1000);
+  setTimeout(() => {
+    console.log("Camp");
+  }, 1500);
 };
 
 const checkUserInput = () => {
-  if (!numberInput.value || isNaN(parseInt(numberInput.value))) {
+  const inputInt = parseInt(numberInput.value);
+
+  if (!numberInput.value || isNaN(inputInt)) {
     alert("Please provide a decimal number");
     return;
   }
 
-  decimalToBinary(parseInt(numberInput.value));
+  if (inputInt === 5) {
+    showAnimation();
+    return;
+  }
+
+  result.textContent = decimalToBinary(inputInt);
   numberInput.value = "";
 };
 
