@@ -33,7 +33,20 @@ const spreadsheetFunctions = {
   sum,
   average,
   median,
+  even: (nums) => nums.filter(isEven),
+  someeven: (nums) => nums.some(isEven),
+  everyeven: (nums) => nums.every(isEven),
+  firsttwo: (nums) => nums.slice(0, 2),
+  lasttwo: (nums) => nums.slice(-2),
+  has2: (nums) => nums.includes(2),
+  increment: (nums) => nums.map((num) => num + 1),
+  random: ([x, y]) => Math.floor(Math.random() * y + x),
+  range: (nums) => range(...nums),
+  nodupes: (nums) => [...new Set(nums).values()],
+  "": (args) => args,
 };
+
+console.log(spreadsheetFunctions["nodupes"]([4, 2, 3, 2, 4, 3, 6, 3, 2]));
 
 const applyFunction = (str) => {
   const noHigh = highPrecedence(str);
@@ -54,6 +67,7 @@ const range = (start, end) =>
   Array(end - start + 1)
     .fill(start)
     .map((element, index) => element + index);
+
 const charRange = (start, end) =>
   range(start.charCodeAt(0), end.charCodeAt(0)).map((code) =>
     String.fromCharCode(code),
@@ -110,7 +124,7 @@ const update = (event) => {
   if (!value.includes(element.id) && value.startsWith("=")) {
     element.value = evalFormula(
       value.slice(1),
-      document.getElementById("container").children,
+      Array.from(document.getElementById("container").children),
     );
   }
 };
