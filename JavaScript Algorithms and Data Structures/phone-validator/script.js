@@ -12,6 +12,7 @@ const numberToCheck = [
   "555-555-5555",
   "(555)555-5555",
   "as12312dasd",
+  "12as12312dasd",
 ];
 
 const validate = (str) => {
@@ -21,7 +22,7 @@ const validate = (str) => {
 };
 
 const numberRegex = (nums) => {
-  const regex = /^\d+$/g;
+  const regex = /\d?\s?(\d{3}|\(\d{3}\))\s?-?(\d{3})\s?-?(\d{4})/;
   let copy = [];
   nums.map((num) => {
     copy.push({ nr: num, regex: regex.test(num) });
