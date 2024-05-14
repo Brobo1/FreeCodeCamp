@@ -42,7 +42,7 @@ const showRes = (num) => {
   if (!validate(num)) {
     return;
   }
-
+  
   if (numberRegexSingle(num)) {
     resultDiv.innerHTML = `<p>Valid US number: ${num}</p>`;
   } else {
