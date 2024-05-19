@@ -5,6 +5,7 @@ const resultDiv = document.getElementById("results-div");
 
 const numberToCheck = [
   "1 555-555-5555",
+  "1  555-555-5555",
   "1 (555) 555-5555",
   "1(555)555-5555",
   "1 555 555 5555",
@@ -16,6 +17,8 @@ const numberToCheck = [
   "55555555",
 ];
 
+const regex = /^1?(\d{3}|\(\d{3}\))-?(\d{3})-?(\d{4})$/;
+
 const validate = (str) => {
   if (str === "") {
     alert("Please provide a phone number");
@@ -25,32 +28,27 @@ const validate = (str) => {
 };
 
 const numberRegex = (nums) => {
-  const regex = /^1?\s?(\d{3}|\(\d{3}\))\s?-?(\d{3})\s?-?(\d{4})$/;
   let copy = [];
   nums.map((num) => {
-    copy.push({ nr: num, regex: regex.test(num) });
+    copy.push({ nr: num, regex: regex.test(num.replace(/\s*/g, "")) });
   });
   return copy;
 };
+console.log(numberRegex(numberToCheck));
 
 const numberRegexSingle = (num) => {
-  const regex = /^1?\s?(\d{3}|\(\d{3}\))\s?-?(\d{3})\s?-?(\d{4})$/;
-  return regex.test(num);
+  return regex.test(num.replace(/\s*/g, ""));
 };
 
 const showRes = (num) => {
   if (!validate(num)) {
     return;
   }
-  
-  if (numberRegexSingle(num)) {
-    resultDiv.innerHTML = `<p>Valid US number: ${num}</p>`;
-  } else {
-    resultDiv.innerHTML = `<p>Invalid US number: ${num}</p>`;
-  }
-};
 
-console.log(numberRegex(numberToCheck));
+  resultDiv.innerHTML = numberRegexSingle(num)
+    ? `<p>Valid US number: ${num}</p>`
+    : `<p>Invalid US number: ${num}</p>`;
+};
 
 checkBtn.addEventListener("click", () => {
   showRes(numberInput.value);
