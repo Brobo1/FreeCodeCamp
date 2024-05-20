@@ -1,0 +1,12 @@
+const startBtn = document.getElementById("start-btn");
+const canvas = document.getElementById("canvas");
+
+const startScreen = document.querySelector(".start-screen");
+const checkpointScreen = document.querySelector(".checkpoint-screen");
+
+const checkpointMessage = document.querySelector(".checkpoint-screen > p");
+
+const ctx = canvas.getContext();
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+const gravity = 0.5;
