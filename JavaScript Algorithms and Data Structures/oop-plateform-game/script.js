@@ -73,7 +73,10 @@ class Platform {
 
 class CheckPoint {
   constructor(x, y, z) {
-    this.position = { x, y };
+    this.position = {
+      x,
+      y,
+    };
     this.width = proportionalSize(40);
     this.height = proportionalSize(70);
     this.claimed = false;
@@ -129,7 +132,10 @@ const animate = () => {
   platforms.forEach((platform) => {
     platform.draw();
   });
-  checkpoints.forEach((checkpoint) => (checkpoint.position.x -= 5));
+
+  checkpoints.forEach((checkpoint) => {
+    checkpoint.draw();
+  });
 
   player.update();
 
@@ -147,6 +153,7 @@ const animate = () => {
       platforms.forEach((platform) => {
         platform.position.x -= 5;
       });
+
       checkpoints.forEach((checkpoint) => {
         checkpoint.position.x -= 5;
       });
@@ -154,7 +161,10 @@ const animate = () => {
       platforms.forEach((platform) => {
         platform.position.x += 5;
       });
-      checkpoints.forEach((checkpoint) => (checkpoint.position.x += 5));
+
+      checkpoints.forEach((checkpoint) => {
+        checkpoint.position.x += 5;
+      });
     }
   }
 
@@ -172,6 +182,7 @@ const animate = () => {
       player.velocity.y = 0;
       return;
     }
+
     const platformDetectionRules = [
       player.position.x >= platform.position.x - player.width / 2,
       player.position.x <=
@@ -179,6 +190,7 @@ const animate = () => {
       player.position.y + player.height >= platform.position.y,
       player.position.y <= platform.position.y + platform.height,
     ];
+
     if (platformDetectionRules.every((rule) => rule)) {
       player.position.y = platform.position.y + player.height;
       player.velocity.y = gravity;
@@ -194,10 +206,12 @@ const animate = () => {
       isCheckpointCollisionDetectionActive,
       player.position.x - player.width <=
         checkpoint.position.x - checkpoint.width + player.width * 0.9,
-      index === 0 || checkpoints[index - 1].claimed,
+      index === 0 || checkpoints[index - 1].claimed === true,
     ];
+
     if (checkpointDetectionRules.every((rule) => rule)) {
       checkpoint.claim();
+
       if (index === checkpoints.length - 1) {
         isCheckpointCollisionDetectionActive = false;
         showCheckpointScreen("You reached the final checkpoint!");
