@@ -17,13 +17,43 @@ let totalScore = 0;
 let round = 1;
 let rolls = 0;
 
+const rollDice = () => {
+  diceValuesArr = [];
+
+  for (let i = 0; i < 5; i++) {
+    const randomDice = Math.floor(Math.random() * 6) + 1;
+    diceValuesArr.push(randomDice);
+  }
+  listOfAllDice.forEach((dice, index) => {
+    dice.textContent = diceValuesArr[index];
+  });
+};
+
 rulesBtn.addEventListener("click", () => {
   isModalShowing = !isModalShowing;
+
   if (isModalShowing) {
     rulesBtn.textContent = "Hide Rules";
     rulesContainer.style.display = "block";
   } else {
     rulesBtn.textContent = "Show Rules";
     rulesContainer.style.display = "none";
+  }
+});
+
+const updateStats = () => {
+  currentRoundRollsText.textContent = rolls;
+  currentRoundText.textContent = round;
+};
+
+const updateRadioOption = (optionNode, score) => {};
+
+rollDiceBtn.addEventListener("click", () => {
+  if (rolls === 3) {
+    alert("You have made three rolls this round. Please select a score.");
+  } else {
+    rolls++;
+    rollDice();
+    updateStats();
   }
 });
