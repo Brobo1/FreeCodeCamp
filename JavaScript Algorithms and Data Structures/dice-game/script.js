@@ -46,7 +46,29 @@ const updateStats = () => {
   currentRoundText.textContent = round;
 };
 
-const updateRadioOption = (optionNode, score) => {};
+const updateRadioOption = (optionNode, score) => {
+  scoreInputs[optionNode].disabled = false;
+  scoreInputs[optionNode].value = score;
+  scoreSpans[optionNode].textContent = `, score = ${score}`;
+};
+
+const getHighestDuplicates = (arr) => {
+  const counts = {};
+  for (const num of arr) {
+    if (counts[num]) {
+      counts[num]++;
+    } else {
+      counts[num] = 1;
+    }
+  }
+  let highestCount = 0;
+  for (const num of arr) {
+    const count = counts[num];
+    if (count >= 3 && count > highestCount) {
+      highestCount = count;
+    }
+  }
+};
 
 rollDiceBtn.addEventListener("click", () => {
   if (rolls === 3) {
