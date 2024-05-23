@@ -86,20 +86,38 @@ const getHighestDuplicates = (arr) => {
 
 const detectFullHouse = (arr) => {
   const counts = {};
+
   for (const num of arr) {
     counts[num] = counts[num] ? counts[num] + 1 : 1;
   }
+
   const hasThreeOfAKind = Object.values(counts).includes(3);
   const hasPair = Object.values(counts).includes(2);
 
   if (hasThreeOfAKind && hasPair) {
     updateRadioOption(2, 25);
   }
+
   updateRadioOption(5, 0);
 };
 
 const checkForStraights = (arr) => {
   const sortedNumbersArr = arr.sort((a, b) => a - b);
+  const uniqueNumbersArr = [...new Set(sortedNumbersArr)];
+  const uniqueNumbersStr = uniqueNumbersArr.join("");
+
+  const smallStraightsArr = ["1234", "2345", "3456"];
+  const largeStraightsArr = ["12345", "23456"];
+  smallStraightsArr.forEach((straight) => {
+    if (uniqueNumbersStr.includes(straight)) {
+      updateRadioOption(3, 30);
+    }
+  });
+
+  if (largeStraightsArr.includes(uniqueNumbersStr)) {
+    updateRadioOption(4, 40);
+  }
+  updateRadioOption(5, 0);
 };
 
 const resetRadioOption = () => {
@@ -126,8 +144,10 @@ const resetGame = () => {
 
   totalScoreText.textContent = totalScore;
   scoreHistory.innerHTML = "";
+
   currentRoundRollsText.textContent = rolls;
   currentRoundText.textContent = round;
+
   resetRadioOption();
 };
 
@@ -141,6 +161,7 @@ rollDiceBtn.addEventListener("click", () => {
     updateStats();
     getHighestDuplicates(diceValuesArr);
     detectFullHouse(diceValuesArr);
+    checkForStraights(diceValuesArr);
   }
 });
 
@@ -157,7 +178,9 @@ rulesBtn.addEventListener("click", () => {
 });
 
 keepScoreBtn.addEventListener("click", () => {
-  let selectedValue, achieved;
+  let selectedValue;
+  let achieved;
+
   for (const radioButton of scoreInputs) {
     if (radioButton.checked) {
       selectedValue = radioButton.value;
@@ -165,6 +188,7 @@ keepScoreBtn.addEventListener("click", () => {
       break;
     }
   }
+
   if (selectedValue) {
     rolls = 0;
     round++;
@@ -174,8 +198,8 @@ keepScoreBtn.addEventListener("click", () => {
     if (round > 6) {
       setTimeout(() => {
         alert(`Game Over! Your total score is ${totalScore}`);
+        resetGame();
       }, 500);
-      resetGame();
     }
   } else {
     alert("Please select an option or roll the dice");
