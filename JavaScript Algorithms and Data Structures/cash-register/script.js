@@ -10,7 +10,7 @@ let cid = [
   ["TWENTY", 60],
   ["ONE HUNDRED", 100],
 ];
-const denom = [
+const denoms = [
   ["PENNY", 0.01],
   ["NICKEL", 0.05],
   ["DIME", 0.1],
@@ -33,8 +33,19 @@ const payment = () => {
   }
   if (cash.value === price.toString()) {
     due.textContent = "No change due - customer paid with exact cash";
+  } else {
   }
 };
+
+const changeDue = (cash) => {
+  for (const denom of denoms.reverse()) {
+    const div = Math.floor(cash / denom[1]);
+    cash = cash % denom[1];
+    console.log(div, denom[1]);
+  }
+};
+
+changeDue(145);
 
 const showCash = () => {
   till.innerHTML = "";
