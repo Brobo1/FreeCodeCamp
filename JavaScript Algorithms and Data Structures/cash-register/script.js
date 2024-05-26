@@ -27,9 +27,12 @@ const due = document.getElementById("change-due");
 const purchaseBtn = document.getElementById("purchase-btn");
 const till = document.getElementById("till");
 
-const noCash = () => {
+const payment = () => {
   if (cash.value < price) {
     alert("Customer does not have enough money to purchase the item");
+  }
+  if (cash.value === price.toString()) {
+    due.textContent = "No change due - customer paid with exact cash";
   }
 };
 
@@ -47,6 +50,6 @@ const updateChange = () => {
 };
 
 purchaseBtn.addEventListener("click", () => {
-  noCash();
+  payment();
   updateChange();
 });
