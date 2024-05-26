@@ -1,4 +1,4 @@
-let price = 1.87;
+let price = 3.26;
 let cid = [
   ["PENNY", 1.01],
   ["NICKEL", 2.05],
@@ -38,14 +38,19 @@ const payment = () => {
 };
 
 const changeDue = (cash) => {
+  cash -= price;
   for (let i = 0; i < denoms.length; i++) {
     const div = Math.floor(cash / denoms[i][1]);
     cash = cash % denoms[i][1];
+    cid[i][1] -= div * denoms[i][1];
+    if (div > 0) {
+      due.innerHTML += `<p>${cid[i][0]}: ${denoms[i][1] * div}</p>`;
+    }
     console.log(div, denoms[i][1]);
   }
 };
 
-changeDue(145);
+changeDue(54);
 
 const showCash = () => {
   till.innerHTML = "";
