@@ -9,7 +9,7 @@ let cid = [
   ["TEN", 20],
   ["TWENTY", 60],
   ["ONE HUNDRED", 100],
-];
+].reverse();
 const denoms = [
   ["PENNY", 0.01],
   ["NICKEL", 0.05],
@@ -20,7 +20,7 @@ const denoms = [
   ["TEN", 10],
   ["TWENTY", 20],
   ["ONE HUNDRED", 100],
-];
+].reverse();
 
 const cash = document.getElementById("cash");
 const due = document.getElementById("change-due");
@@ -38,10 +38,10 @@ const payment = () => {
 };
 
 const changeDue = (cash) => {
-  for (const denom of denoms.reverse()) {
-    const div = Math.floor(cash / denom[1]);
-    cash = cash % denom[1];
-    console.log(div, denom[1]);
+  for (let i = 0; i < denoms.length; i++) {
+    const div = Math.floor(cash / denoms[i][1]);
+    cash = cash % denoms[i][1];
+    console.log(div, denoms[i][1]);
   }
 };
 
