@@ -1,14 +1,14 @@
 let price = 19.5;
 let cid = [
-  ["PENNY", 1.01],
-  ["NICKEL", 2.05],
-  ["DIME", 3.1],
-  ["QUARTER", 4.25],
-  ["ONE", 90],
-  ["FIVE", 55],
-  ["TEN", 20],
-  ["TWENTY", 60],
-  ["ONE HUNDRED", 100],
+  ["PENNY", 0.5],
+  ["NICKEL", 0],
+  ["DIME", 0],
+  ["QUARTER", 0],
+  ["ONE", 0],
+  ["FIVE", 0],
+  ["TEN", 0],
+  ["TWENTY", 0],
+  ["ONE HUNDRED", 0],
 ];
 
 const denoms = [
@@ -21,46 +21,57 @@ const denoms = [
   ["TEN", 10],
   ["TWENTY", 20],
   ["ONE HUNDRED", 100],
-];
+].reverse();
 
 const cash = document.getElementById("cash");
 const due = document.getElementById("change-due");
 const purchaseBtn = document.getElementById("purchase-btn");
 const till = document.getElementById("till");
 
-const cidCopy = [...cid].reverse();
-denoms.reverse();
 const payment = (cash) => {
-  const totalCash = parseFloat(
-    cidCopy.reduce((a, b) => a + b[1], 0).toFixed(2),
-  );
+  const totalCash = cid.reduce((a, b) => a + b[1], 0);
   if (cash < price) {
     alert("Customer does not have enough money to purchase the item");
   } else if (cash === price.toString()) {
     due.textContent = "No change due - customer paid with exact cash";
-  } else if (totalCash <= cash - price) {
-    due.textContent = `Status: INSUFFICIENT_FUNDS`;
   } else {
-    due.textContent = `Status: OPEN `;
     changeDue(cash);
   }
 };
 
 const changeDue = (cash) => {
-  cash -= price;
+  const cidCopy = [...cid].reverse();
+  let changeDue = cash - price;
+  let changeArray = [];
 
   for (let i = 0; i < denoms.length; i++) {
     let counter = 0;
-    if (cash / denoms[i][1] > 1) {
-      while (cidCopy[i][1] > 0 && cash - denoms[i][1] >= 0) {
-        counter++;
-        cidCopy[i][1] -= denoms[i][1];
-        cash -= denoms[i][1];
-        cash = parseFloat(cash.toFixed(2));
-      }
+    while (cidCopy[i][1] > 0 && changeDue - denoms[i][1] >= 0) {
+      counter++;
+      cidCopy[i][1] -= denoms[i][1];
+      changeDue -= denoms[i][1];
+      changeDue = parseFloat(changeDue.toFixed(2));
     }
-    if (counter > 0)
-      due.textContent += ` ${denoms[i][0]}: $${denoms[i][1] * counter}`;
+    if (counter > 0) {
+      changeArray.push([denoms[i][0], denoms[i][1] * counter]);
+    }
+  }
+
+  if (changeDue > 0) {
+    due.innerHTML = `<p>Status: INSUFFICIENT_FUNDS</p>`;
+  } else {
+    const totalCashAfterChange = parseInt(
+      cidCopy.reduce((a, b) => a + b[1], 0).toFixed(2),
+    );
+    console.log(totalCashAfterChange);
+    if (totalCashAfterChange === 0) {
+      due.innerHTML = `<p>Status: CLOSED</p>`;
+    } else {
+      due.innerHTML = `<p>Status: OPEN</p>`;
+    }
+    for (const change of changeArray) {
+      due.innerHTML += `<p>${change[0]}: $${change[1]}</p>`;
+    }
   }
 };
 
