@@ -1,4 +1,4 @@
-let price = 3.26;
+let price = 19.5;
 let cid = [
   ["PENNY", 1.01],
   ["NICKEL", 2.05],
@@ -9,7 +9,7 @@ let cid = [
   ["TEN", 20],
   ["TWENTY", 60],
   ["ONE HUNDRED", 100],
-].reverse();
+];
 const denoms = [
   ["PENNY", 0.01],
   ["NICKEL", 0.05],
@@ -20,37 +20,48 @@ const denoms = [
   ["TEN", 10],
   ["TWENTY", 20],
   ["ONE HUNDRED", 100],
-].reverse();
+];
 
 const cash = document.getElementById("cash");
 const due = document.getElementById("change-due");
 const purchaseBtn = document.getElementById("purchase-btn");
 const till = document.getElementById("till");
 
-const payment = () => {
-  if (cash.value < price) {
+cid.reverse();
+denoms.reverse();
+const totalCash = cid.reduce((a, b) => a + b[1], 0).toFixed(2);
+
+const payment = (cash) => {
+  if (cash < price) {
     alert("Customer does not have enough money to purchase the item");
-  }
-  if (cash.value === price.toString()) {
+  } else if (cash === price.toString()) {
     due.textContent = "No change due - customer paid with exact cash";
   } else {
+    due.textContent = `Status: OPEN `;
+    changeDue(cash);
   }
 };
 
+//"Status: OPEN TWENTY: $60 TEN: $20 FIVE: $15 ONE: $1 QUARTER: $0.5 DIME: $0.2 PENNY: $0.04"
 const changeDue = (cash) => {
   cash -= price;
+
   for (let i = 0; i < denoms.length; i++) {
-    const div = Math.floor(cash / denoms[i][1]);
-    cash = cash % denoms[i][1];
-    cid[i][1] -= div * denoms[i][1];
-    if (div > 0) {
-      due.innerHTML += `<p>${cid[i][0]}: ${denoms[i][1] * div}</p>`;
+    let counter = 0;
+    if (cash / denoms[i][1] > 1) {
+      while (cid[i][1] > 0 && cash - denoms[i][1] >= 0) {
+        counter++;
+        cid[i][1] -= denoms[i][1];
+        cash -= denoms[i][1];
+        cash = cash.toFixed(2);
+      }
     }
-    console.log(div, denoms[i][1]);
+    if (counter > 0)
+      due.textContent += `${cid[i][0]}: $${denoms[i][1] * counter}`;
   }
 };
-
-changeDue(54);
+//Status: OPEN QUARTER: $0.5
+//Status: OPEN QUARTER: $0.5
 
 const showCash = () => {
   till.innerHTML = "";
@@ -59,13 +70,14 @@ const showCash = () => {
   }
 };
 
-showCash();
-
 const updateChange = () => {
   showCash();
 };
 
+showCash();
+
 purchaseBtn.addEventListener("click", () => {
-  payment();
   updateChange();
+  payment(cash.value);
+  showCash();
 });
