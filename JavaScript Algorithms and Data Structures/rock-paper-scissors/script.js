@@ -7,7 +7,14 @@ function getRandomComputerResult() {
 function hasPlayerWonTheRound(player, computer) {
   const opts = {
     rock: { beats: "scissors", loses: "paper" },
+    paper: { beats: "rock", loses: "scissors" },
+    scissors: { beats: "paper", loses: "rock" },
   };
+  return opts[player.toLowerCase()].beats === computer.toLowerCase();
+}
+
+function getRoundResults(userOption) {
+  const computerResult = getRandomComputerResult();
 }
 
 console.log(hasPlayerWonTheRound("Rock", "Scissors"));
