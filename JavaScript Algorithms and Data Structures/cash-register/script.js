@@ -10,6 +10,7 @@ let cid = [
   ["TWENTY", 60],
   ["ONE HUNDRED", 100],
 ];
+
 const denoms = [
   ["PENNY", 0.01],
   ["NICKEL", 0.05],
@@ -27,41 +28,41 @@ const due = document.getElementById("change-due");
 const purchaseBtn = document.getElementById("purchase-btn");
 const till = document.getElementById("till");
 
-cid.reverse();
+const cidCopy = [...cid].reverse();
 denoms.reverse();
-const totalCash = cid.reduce((a, b) => a + b[1], 0).toFixed(2);
-
 const payment = (cash) => {
+  const totalCash = parseFloat(
+    cidCopy.reduce((a, b) => a + b[1], 0).toFixed(2),
+  );
   if (cash < price) {
     alert("Customer does not have enough money to purchase the item");
   } else if (cash === price.toString()) {
     due.textContent = "No change due - customer paid with exact cash";
+  } else if (totalCash <= cash - price) {
+    due.textContent = `Status: INSUFFICIENT_FUNDS`;
   } else {
     due.textContent = `Status: OPEN `;
     changeDue(cash);
   }
 };
 
-//"Status: OPEN TWENTY: $60 TEN: $20 FIVE: $15 ONE: $1 QUARTER: $0.5 DIME: $0.2 PENNY: $0.04"
 const changeDue = (cash) => {
   cash -= price;
 
   for (let i = 0; i < denoms.length; i++) {
     let counter = 0;
     if (cash / denoms[i][1] > 1) {
-      while (cid[i][1] > 0 && cash - denoms[i][1] >= 0) {
+      while (cidCopy[i][1] > 0 && cash - denoms[i][1] >= 0) {
         counter++;
-        cid[i][1] -= denoms[i][1];
+        cidCopy[i][1] -= denoms[i][1];
         cash -= denoms[i][1];
-        cash = cash.toFixed(2);
+        cash = parseFloat(cash.toFixed(2));
       }
     }
     if (counter > 0)
-      due.textContent += `${cid[i][0]}: $${denoms[i][1] * counter}`;
+      due.textContent += ` ${denoms[i][0]}: $${denoms[i][1] * counter}`;
   }
 };
-//Status: OPEN QUARTER: $0.5
-//Status: OPEN QUARTER: $0.5
 
 const showCash = () => {
   till.innerHTML = "";
