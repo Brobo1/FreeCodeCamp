@@ -38,9 +38,12 @@ const timeAgo = (time) => {
   const currentTime = new Date();
   const lastPost = new Date(time);
 
-  const minutes = Math.floor((currentTime - lastPost) / 60000);
-  const hours = Math.floor((currentTime - lastPost) / 3600000);
-  const days = Math.floor((currentTime - lastPost) / 86400000);
+  const timeDifference = currentTime - lastPost;
+  const msPerMinute = 1000 * 60;
+
+  const minutes = Math.floor(timeDifference / msPerMinute);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
 
   if (minutes < 60) {
     return `${minutes}m ago`;
@@ -53,6 +56,21 @@ const timeAgo = (time) => {
 
 const viewCount = (views) => {
   return views >= 1000 ? `${Math.floor(views / 1000)}k` : views;
+};
+
+const avatars = (posters, users) => {
+  return posters
+    .map((poster) => {
+      const user = users.find((user) => user.id === poster.user_id);
+      if (user) {
+        const avatar = user.avatar_template.replace(/{size}/, 30);
+        const userAvatarUrl = avatar.startsWith("/user_avatar/")
+          ? avatarUrl.concat(avatar)
+          : avatar;
+        return `<img src="${userAvatarUrl}" alt="${user.name}"/>`;
+      }
+    })
+    .join("");
 };
 
 const fetchData = async () => {
@@ -85,8 +103,15 @@ const showLatestPosts = (data) => {
       } = item;
       return `
         <tr>
-          <td><p class="post-title">${title}</p></td>
-          <td></td>
+          <td>
+            <a class="post-title" target="_blank" href="${forumTopicUrl}${slug}/${id}">${title}</a>
+            ${forumCategory(category_id)}
+          </td>
+          <td>
+            <div class="avatar-container">
+                ${avatars(posters, users)}
+            </div>
+          </td>
           <td>${posts_count - 1}</td>
           <td>${viewCount(views)}</td>
           <td>${timeAgo(bumped_at)}</td>
