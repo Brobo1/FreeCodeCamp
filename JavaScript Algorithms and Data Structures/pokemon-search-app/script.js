@@ -14,10 +14,18 @@ const fetchData = async () => {
     console.log(err);
   }
 };
-
-fetchData();
-
 const logNames = (data) => {
   const { count, results } = data;
-  results.map((pokemon) => console.log(pokemon));
+  const name = results.find(
+    (pokemon) =>
+      pokemon.name === input.value.toLowerCase() ||
+      pokemon.id.toString() === input.value.toLowerCase(),
+  );
+  if (name) {
+    console.log(name);
+  } else {
+    alert("Pokémon not found");
+  }
 };
+
+btn.addEventListener("click", fetchData);
